@@ -32,7 +32,6 @@ gem 'schema', git: "https://#{prefs['github_user']}@github.com/quipper/schema.gi
 
 gem_group :development, :test do
   gem "rspec-rails"
-  gem "factory_girl_rails", require: false
 end
 
 run "bundle install"
