@@ -4,18 +4,24 @@ prefs = YAML.load_file(File.expand_path('~/.quipper'))
 
 run "rm public/index.html"
 
-initializer 'mongo.rb', <<-CODE
-db_test = '#{prefs['database']['test']}'
-db_development = '#{prefs['database']['development']}'
+file 'config/mongo.yml', <<-CODE
+defaults: &defaults
+  host: 127.0.0.1
+  port: 27017
 
-path = if Rails.env.production?
-  ENV['MONGOLAB_URI']
-else 
-  "mongodb://@localhost:27017/" << (Rails.env.test? ? db_test : db_development)
-end
+development:
+  <<: *defaults
+  database: quipper_web_development
 
-MongoMapper.config = { Rails.env => { 'uri' => path } }
-MongoMapper.connect(Rails.env)
+test:
+  <<: *defaults
+  database: quipper_web_test
+
+edge:
+  uri: <%= ENV['MONGOLAB_URI'] %>
+
+production:
+  uri: <%= ENV['MONGOLAB_URI'] %>
 CODE
 
 initializer 'schema.rb', <<-CODE
