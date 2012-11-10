@@ -45,3 +45,5 @@ end
 file 'spec/factories.rb', <<-CODE
 require 'schema/factories/seed'
 CODE
+
+run "rake schema:seed"
